@@ -6,8 +6,8 @@
 #########################
 
 import sys
-import glob
 import bs4
+import glob
 
 
 """
@@ -58,7 +58,7 @@ def processReadings(filename: str):
     """
     # Open the file using with
     with(open(filename, "r")) as f:
-        soup = bs4.BeautifulSoup(f)
+        soup = bs4.BeautifulSoup(f, "html.parser")
     
     # Get the table
     table = soup.find("table")
@@ -71,9 +71,9 @@ def processReadings(filename: str):
         columns = row.findAll("td")
         # Skip the first column.
         # The second column is the sentence
-        sentence = columns[1].string
+        sentence = columns[1].text
         # The third column is the translation
-        translation = columns[2].string
+        translation = columns[2].text
         # Add the dt/dd pair to the new soup
         new_soup.append(new_soup.new_tag("dt", string=sentence))
         new_soup.append(new_soup.new_tag("dd", string=translation))
@@ -104,17 +104,22 @@ def processFile(soup: bs4.BeautifulSoup):
     rows = table.findAll("tr")
     for row in rows:
         # In each row, the second TD has the speaker
-        speaker = row.findAll("td")[1].string
-        conversation.append(new_soup.new_tag("p", string=speaker))
+        speaker = row.findAll("td")[1]
+        # Add the speaker to the new soup
+        conversation.append(new_soup.new_tag("p", text=speaker.text))
 
         # The first TD has the readings filename
-        readings_filename = row.findAll("td")[0].find("a")["href"]
+        try:
+            readings_filename = row.findAll("td")[0].find("a")["href"].strip()
+        except TypeError:
+            # If there's no readings, skip this row
+            continue
         readings_soup = processReadings(readings_filename)
         # We're going to include the readings in a details tag
         details = new_soup.new_tag("details", **{"class": "simple"})
         conversation.append(details)
         # The summary is the speaker's sentence, from the span next to the audio.
-        summary = new_soup.new_tag("summary", string=row.findAll("td")[2].find("span").string)
+        summary = new_soup.new_tag("summary", text=row.findAll("td")[2].find("span").text)
         details.append(summary)
         # The details will contain the readings
         details.append(readings_soup)
@@ -153,7 +158,7 @@ def main():
     for filename in files:
         print("Reading %s..." % filename)
         with(open(filename, "r")) as f:
-            soup = bs4.BeautifulSoup(f)
+            soup = bs4.BeautifulSoup(f, "html.parser")
 
         # Process the file
         new_soup = processFile(soup)
@@ -168,7 +173,7 @@ def main():
         html.html.body.append(new_soup)
 
         # Write the new file
-        new_filename = filename + ".new"
+        new_filename = filename[:-5] + ".new.html"
         print("Writing %s..." % new_filename)
         with(open(new_filename, "w")) as f:
             # Write the HTML structure and pretty-print it
