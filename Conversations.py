@@ -7,7 +7,7 @@
 
 import sys
 import glob
-import BeautifulSoup
+import bs4
 
 
 """
@@ -58,7 +58,28 @@ def processReadings(filename: str):
     """
     # Open the file using with
     with(open(filename, "r")) as f:
-        soup = BeautifulSoup.BeautifulSoup(f)
+        soup = bs4.BeautifulSoup(f)
+    
+    # Get the table
+    table = soup.find("table")
+    # Create a new soup to hold the new structure
+    new_soup = bs4.BeautifulSoup()
+
+    # Each row turns into a dt/dd pair.
+    rows = table.findAll("tr")
+    for row in rows:
+        columns = row.findAll("td")
+        # Skip the first column.
+        # The second column is the sentence
+        sentence = columns[1].string
+        # The third column is the translation
+        translation = columns[2].string
+        # Add the dt/dd pair to the new soup
+        new_soup.append(new_soup.new_tag("dt", string=sentence))
+        new_soup.append(new_soup.new_tag("dd", string=translation))
+    
+    return new_soup
+
 
     #################################
     # TODO: Pick up here next time. #
@@ -66,7 +87,7 @@ def processReadings(filename: str):
 
     pass
 
-def processFile(soup: BeautifulSoup.BeautifulSoup):
+def processFile(soup: bs4.BeautifulSoup):
     """Processes a single file.
     Keyword arguments: soup -- the BeautifulSoup object for the file
     Returns: a new BeautifulSoup object with the new structure
@@ -74,7 +95,7 @@ def processFile(soup: BeautifulSoup.BeautifulSoup):
     # Get the table
     table = soup.find("table")
     # Create a new soup to hold the new structure
-    new_soup = BeautifulSoup.BeautifulSoup()
+    new_soup = bs4.BeautifulSoup()
     # The new structure will be a div with class "conversation"
     conversation = new_soup.new_tag("div", **{"class": "conversation"})
     new_soup.append(conversation)
@@ -132,13 +153,13 @@ def main():
     for filename in files:
         print("Reading %s..." % filename)
         with(open(filename, "r")) as f:
-            soup = BeautifulSoup.BeautifulSoup(f)
+            soup = bs4.BeautifulSoup(f)
 
         # Process the file
         new_soup = processFile(soup)
 
         # Wrap that in a standard HTML structure
-        html = BeautifulSoup.BeautifulSoup()
+        html = bs4.BeautifulSoup()
         html.append(new_soup.new_tag("doctype", **{"html": ""}))
         html.append(new_soup.new_tag("html"))
         html.html.append(new_soup.new_tag("head"))
