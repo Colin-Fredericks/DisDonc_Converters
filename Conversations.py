@@ -75,8 +75,12 @@ def processReadings(filename: str):
         # The third column is the translation
         translation = columns[2].text
         # Add the dt/dd pair to the new soup
-        new_soup.append(new_soup.new_tag("dt", string=sentence))
-        new_soup.append(new_soup.new_tag("dd", string=translation))
+        dt = new_soup.new_tag("dt")
+        dt.string = sentence
+        new_soup.append(dt)
+        dd = new_soup.new_tag("dd")
+        dd.string = translation
+        new_soup.append(dd)
     
     return new_soup
 
@@ -106,7 +110,9 @@ def processFile(soup: bs4.BeautifulSoup):
         # In each row, the second TD has the speaker
         speaker = row.findAll("td")[1]
         # Add the speaker to the new soup
-        conversation.append(new_soup.new_tag("p", text=speaker.text))
+        speaker_tag = new_soup.new_tag("p")
+        speaker_tag.string = speaker.text
+        conversation.append(speaker_tag)
 
         # The first TD has the readings filename
         try:
@@ -119,7 +125,8 @@ def processFile(soup: bs4.BeautifulSoup):
         details = new_soup.new_tag("details", **{"class": "simple"})
         conversation.append(details)
         # The summary is the speaker's sentence, from the span next to the audio.
-        summary = new_soup.new_tag("summary", text=row.findAll("td")[2].find("span").text)
+        summary = new_soup.new_tag("summary")
+        summary.string = row.findAll("td")[2].find("span").text
         details.append(summary)
         # The details will contain the readings
         details.append(readings_soup)
@@ -176,7 +183,7 @@ def main():
         new_filename = filename[:-5] + ".new.html"
         print("Writing %s..." % new_filename)
         with(open(new_filename, "w")) as f:
-            # Write the HTML structure and pretty-print it
+            # Write the HTML structure
             f.write(html.prettify())
 
 
