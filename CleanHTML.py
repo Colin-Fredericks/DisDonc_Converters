@@ -75,15 +75,38 @@ def main():
         styles = [s for s in styles if not s.startswith("margin-bottom:")]
         tag["style"] = "; ".join(styles)
 
-    # Remove any blank style attributes
+    # Remove the following classes:
+    # rea, au
+    for tag in soup.find_all(class_=True):
+        classes = tag["class"]
+        classes = [c for c in classes if c not in ["rea", "au"]]
+        tag["class"] = classes
+
+    # Remove any blank style or class attributes
     for tag in soup.find_all(style=True):
         if tag["style"].strip() in [";", ""]:
             del tag["style"]
+        if tag["class"].strip() in [";", ""]:
+            del tag["class"]
 
     # If the text of a tag is all-caps, make it title case.
     for tag in soup.find_all():
         if tag.text.isupper():
             tag.string = tag.text.title()
+
+    # Find every <p class="audio-player"> tag
+    # Move it and its <audio> tag to just before the table
+    for tag in soup.find_all("p", class_="audio-player"):
+        audio_tag = tag.find("audio")
+        tag.decompose()
+        table = soup.find("table")
+        table.insert_before(audio_tag)
+        table.insert_before(tag)
+
+    # Remove any table rows where all the cells are empty
+    for tag in soup.find_all("tr"):
+        if all([cell.text.strip() == "" for cell in tag.find_all("td")]):
+            tag.decompose()
 
     # Prepare the HTML for pretty-printing
     unformatted_tag_list = []
