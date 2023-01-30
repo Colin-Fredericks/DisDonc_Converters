@@ -6,6 +6,8 @@
 import sys
 import bs4
 
+# TODO: Something in here is removing the <a> tag around the word ANSWER.
+
 
 def main():
     # Open the file
@@ -15,6 +17,10 @@ def main():
 
     # Parse the HTML
     soup = bs4.BeautifulSoup(text, "html.parser")
+
+    # Remove the outer <html>, <head>, and <body> tags.
+    # Just get the outer <div> tag for the <body>.
+    soup = soup.body.div
 
     # Remove all ID attributes
     for tag in soup.find_all(id=True):
@@ -103,6 +109,61 @@ def main():
         table.insert_before(audio_tag)
         table.insert_before(tag)
 
+
+    """ Not sure why this part isn't working.
+    The new_tag method isn't working - it's NoneType.
+
+    # If there's a table with only one row,
+    # get the link from the second <td> and the the text from both <td>s
+    # Turn the table into a <summary> tag, with the second <td> first.
+    for table in soup.find_all("table"):
+        if len(table.find_all("tr")) == 1:
+            print(str(soup.new_tag))
+            details_tag = soup.new_tag("details")
+            summary_tag = soup.new_tag("summary")
+            details_tag.append(summary_tag)
+
+            row = table.find("tr")
+            cells = row.find_all("td")
+            link = cells[1].find("a")
+            # Get the text
+            summary_tag.append(link)
+            summary_tag.append("<span>" + cells[0].text + "</span>")
+
+            TODO: this part might be a problem.
+            # Get the file
+            readings_filename = link["href"].strip()
+            # Try to open the file.
+            # If it doesn't exist, change the path to readings/ and try that.
+            try:
+                with open(readings_filename, "r") as f:
+                    file_text = f.read()
+            except FileNotFoundError:
+                readings_filename = readings_filename.replace("../../readings/", "readings/")
+                try:
+                    with open(readings_filename, "r") as f:
+                        file_text = f.read()
+                except FileNotFoundError:
+                    file_text = "<body><h1>File not found.</h1></body>"
+
+            # Parse the file
+            file_soup = bs4.BeautifulSoup(file_text, "html.parser")
+            # Get the body
+            file_body = file_soup.find("body")
+            # Get rid of any script tags
+            for tag in file_body.find_all("script"):
+                tag.decompose()
+            # Insert the contents of the body into the <details> tag
+            details_tag.append(file_body)
+
+            TODO: ok, problem part over.
+
+            # Insert the <details> tag before the table
+            table.insert_before(details_tag)
+            # Remove the table
+            table.decompose()
+    """
+
     # Remove any table rows where all the cells are empty
     for tag in soup.find_all("tr"):
         if all([cell.text.strip() == "" for cell in tag.find_all("td")]):
@@ -140,6 +201,8 @@ def main():
     # Write the new file, pretty-printed.
     with open(filename[:-5] + ".clean.html", "w") as f:
         f.write(pretty_markup)
+        # print the location of the file
+        print("File written to {0}".format(filename[:-5] + ".clean.html"))
 
 
 if __name__ == "__main__":
