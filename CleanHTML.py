@@ -6,9 +6,6 @@
 import sys
 import bs4
 
-# TODO: Something in here is removing the <a> tag around the word ANSWER.
-
-
 def main():
     # Open the file
     filename = sys.argv[1]
@@ -16,11 +13,11 @@ def main():
         text = f.read()
 
     # Parse the HTML
-    soup = bs4.BeautifulSoup(text, "html.parser")
+    outer_soup = bs4.BeautifulSoup(text, "html.parser")
 
     # Remove the outer <html>, <head>, and <body> tags.
     # Just get the outer <div> tag for the <body>.
-    soup = soup.body.div
+    soup = outer_soup.body.div
 
     # Remove all ID attributes
     for tag in soup.find_all(id=True):
@@ -88,17 +85,12 @@ def main():
         classes = [c for c in classes if c not in ["rea", "au"]]
         tag["class"] = classes
 
-    # Remove any blank style or class attributes
-    for tag in soup.find_all(style=True):
-        if tag["style"].strip() in [";", ""]:
-            del tag["style"]
-        if tag["class"].strip() in [";", ""]:
-            del tag["class"]
-
     # If the text of a tag is all-caps, make it title case.
     for tag in soup.find_all():
         if tag.text.isupper():
-            tag.string = tag.text.title()
+            # Only replace the innermost tags
+            if len(tag.find_all()) == 0:
+                tag.string = tag.text.title()
 
     # Find every <p class="audio-player"> tag
     # Move it and its <audio> tag to just before the table
@@ -109,28 +101,22 @@ def main():
         table.insert_before(audio_tag)
         table.insert_before(tag)
 
-
-    """ Not sure why this part isn't working.
-    The new_tag method isn't working - it's NoneType.
-
     # If there's a table with only one row,
     # get the link from the second <td> and the the text from both <td>s
     # Turn the table into a <summary> tag, with the second <td> first.
     for table in soup.find_all("table"):
         if len(table.find_all("tr")) == 1:
-            print(str(soup.new_tag))
-            details_tag = soup.new_tag("details")
-            summary_tag = soup.new_tag("summary")
+            details_tag = outer_soup.new_tag("details")
+            summary_tag = outer_soup.new_tag("summary")
             details_tag.append(summary_tag)
 
             row = table.find("tr")
             cells = row.find_all("td")
             link = cells[1].find("a")
             # Get the text
+            summary_tag.append(cells[0].text)
             summary_tag.append(link)
-            summary_tag.append("<span>" + cells[0].text + "</span>")
 
-            TODO: this part might be a problem.
             # Get the file
             readings_filename = link["href"].strip()
             # Try to open the file.
@@ -139,7 +125,9 @@ def main():
                 with open(readings_filename, "r") as f:
                     file_text = f.read()
             except FileNotFoundError:
-                readings_filename = readings_filename.replace("../../readings/", "readings/")
+                readings_filename = readings_filename.replace(
+                    "../../readings/", "readings/"
+                )
                 try:
                     with open(readings_filename, "r") as f:
                         file_text = f.read()
@@ -148,6 +136,7 @@ def main():
 
             # Parse the file
             file_soup = bs4.BeautifulSoup(file_text, "html.parser")
+            # TODO: Run this through the appropriate readings cleaner.
             # Get the body
             file_body = file_soup.find("body")
             # Get rid of any script tags
@@ -156,13 +145,18 @@ def main():
             # Insert the contents of the body into the <details> tag
             details_tag.append(file_body)
 
-            TODO: ok, problem part over.
-
             # Insert the <details> tag before the table
             table.insert_before(details_tag)
             # Remove the table
             table.decompose()
-    """
+
+    # Remove any blank style or class attributes
+    for tag in soup.find_all(style=True):
+        if tag["style"].strip() in [";", ""]:
+            del tag["style"]
+    for tag in soup.find_all(class_=True):
+        if tag["class"] == []:
+            del tag["class"]
 
     # Remove any table rows where all the cells are empty
     for tag in soup.find_all("tr"):
