@@ -6,6 +6,93 @@
 import sys
 import bs4
 
+# Try to open the file.
+# If it doesn't exist, change the path to readings/ and try that.
+def openAndGuessEncoding(filename):
+    try:
+        # Check for utf-8. Backup is Windows 1252.
+        with open(filename, "r", encoding="utf-8") as f:
+            file_text = f.read()
+    except UnicodeDecodeError:
+        try:
+            with open(filename, "r", encoding="cp1252") as f:
+                file_text = f.read()
+        except UnicodeDecodeError():
+            raise UnicodeDecodeError("Could not guess file encoding.")
+    except FileNotFoundError:
+        raise FileNotFoundError("Could not find file: " + filename)
+    
+    return file_text
+
+
+def pullFromLink(summary_tag, details_tag, table, link, cells):
+    # Get the text
+    summary_tag.append(cells[0].text)
+    summary_tag.append(link or cells[1].text)
+
+    # Get the file
+    readings_filename = link["href"].strip()
+    try:
+        file_text = openAndGuessEncoding(readings_filename)
+    except FileNotFoundError:
+        file_text = "<body><h1>File not found.</h1></body>"
+    except UnicodeDecodeError:
+        file_text = "<body><h1>Could not guess encoding.</h1></body>"
+
+    # Parse the file
+    file_soup = bs4.BeautifulSoup(file_text, "html.parser")
+    # TODO: Run this through the appropriate readings cleaner.
+    # Get the body
+    file_body = file_soup.find("body")
+    # Get rid of any script tags
+    for tag in file_body.find_all("script"):
+        tag.decompose()
+    # Insert the contents of the body into the <details> tag
+    details_tag.append(file_body)
+
+    # Insert the <details> tag before the table
+    table.insert_before(details_tag)
+    # Remove the table
+    table.decompose()
+
+def handleAnswers(outer_soup, tag):
+    # Get the link
+    link = tag.find("a")
+    # Get the text
+    answers_filename = link["href"].strip()
+    try:
+        file_text = openAndGuessEncoding(answers_filename)
+    except FileNotFoundError:
+        file_text = "<body><h1>File not found.</h1></body>"
+    except UnicodeDecodeError:
+        file_text = "<body><h1>Could not guess encoding.</h1></body>"
+
+    # Parse the file
+    file_soup = bs4.BeautifulSoup(file_text, "html.parser")
+    # Get just the body.
+    file_body = file_soup.find("body")
+    # Strip out any ids
+    # Get rid of any script, br, or form tags
+    for bad_tag in file_body.find_all(["script", "br", "form"]):
+        bad_tag.decompose()
+    for id_tag in file_body.find_all(id=True):
+        del id_tag["id"]
+    # If the body's only child is a div, get the div's children.
+    if file_body.find("div", recursive=False):
+        file_body = file_body.findAll(recursive=False)
+
+    for child in file_body:
+        # Make a <details> tag and <summary> tag
+        details_tag = outer_soup.new_tag("details")
+        summary_tag = outer_soup.new_tag("summary")
+        details_tag.append(summary_tag)
+        summary_tag.append("Show Answers")
+        # Insert the contents of the body into the <details> tag
+        details_tag.append(child)
+        # Insert the <details> tag before the paragraph
+        tag.insert_before(details_tag)
+
+
 def main():
     # Open the file
     filename = sys.argv[1]
@@ -41,6 +128,8 @@ def main():
     # Stop telling things to align left; that's the default.
     for tag in soup.find_all(align="left"):
         del tag["align"]
+
+    # TODO: Fix every link. They're probably pointing to the wrong place.
 
     # Better audio links
     # Original structure: <p><a class="au" href=" ../../audio/fr18t46.mp3 " target="_blank"><span style="font-size: 12pt;">Écoutez.</span></a></p>
@@ -104,6 +193,7 @@ def main():
     # If there's a table with only one row,
     # get the link from the second <td> and the the text from both <td>s
     # Turn the table into a <summary> tag, with the second <td> first.
+    # Pull in the file from the link and put it in the <details> tag.
     for table in soup.find_all("table"):
         if len(table.find_all("tr")) == 1:
             details_tag = outer_soup.new_tag("details")
@@ -113,42 +203,16 @@ def main():
             row = table.find("tr")
             cells = row.find_all("td")
             link = cells[1].find("a")
-            # Get the text
-            summary_tag.append(cells[0].text)
-            summary_tag.append(link)
+            if(link):
+                pullFromLink(summary_tag, details_tag, table, link, cells)
 
-            # Get the file
-            readings_filename = link["href"].strip()
-            # Try to open the file.
-            # If it doesn't exist, change the path to readings/ and try that.
-            try:
-                with open(readings_filename, "r") as f:
-                    file_text = f.read()
-            except FileNotFoundError:
-                readings_filename = readings_filename.replace(
-                    "../../readings/", "readings/"
-                )
-                try:
-                    with open(readings_filename, "r") as f:
-                        file_text = f.read()
-                except FileNotFoundError:
-                    file_text = "<body><h1>File not found.</h1></body>"
-
-            # Parse the file
-            file_soup = bs4.BeautifulSoup(file_text, "html.parser")
-            # TODO: Run this through the appropriate readings cleaner.
-            # Get the body
-            file_body = file_soup.find("body")
-            # Get rid of any script tags
-            for tag in file_body.find_all("script"):
-                tag.decompose()
-            # Insert the contents of the body into the <details> tag
-            details_tag.append(file_body)
-
-            # Insert the <details> tag before the table
-            table.insert_before(details_tag)
-            # Remove the table
-            table.decompose()
+    # When there's a centered paragraph that says "Answers",
+    # Pull the text from the linked file and put it
+    # in a <details> tag.
+    for tag in soup.find_all("p", align="center"):
+        if tag.text.strip().lower() == "answers":
+            handleAnswers(outer_soup, tag)
+            tag.decompose()
 
     # Remove any blank style or class attributes
     for tag in soup.find_all(style=True):
