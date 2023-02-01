@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # Python3 script to clean up HTML files
 # Usage: python3 CleanHTML.py <filename>
-# Output: <filename>.clean
+# Output: <filename>.clean.html
 
 import sys
 import bs4
