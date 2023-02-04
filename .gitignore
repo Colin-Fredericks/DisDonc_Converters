@@ -1,2 +1,3 @@
 .DS_Store
 ddc/
+__pycache__/*

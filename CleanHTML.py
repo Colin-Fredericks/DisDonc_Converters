@@ -3,12 +3,14 @@
 # Usage: python3 CleanHTML.py <filename>
 # Output: <filename>.clean.html
 
+import os
 import sys
 import bs4
 
 # Try to open the file.
 # If it doesn't exist, change the path to readings/ and try that.
 def openAndGuessEncoding(filename):
+    filename = filename.replace("../", "")
     try:
         # Check for utf-8. Backup is Windows 1252.
         with open(filename, "r", encoding="utf-8") as f:
@@ -24,6 +26,33 @@ def openAndGuessEncoding(filename):
     
     return file_text
 
+def fixAudioLinks(soup, outer_soup):
+    # Better audio links
+    # Original structure: <p><a class="au" href=" ../../audio/fr18t46.mp3 " target="_blank"><span style="font-size: 12pt;">Écoutez.</span></a></p>
+    # New structure:
+    # <p class="audio-player">
+    #   <audio controls src="../audio/frchc119.mp3"></audio>
+    # </p>
+
+    # Find all of the audio links
+    for tag in soup.find_all("a", class_="au"):
+        # Add the audio-player class to the parent <p> tag
+        tag.parent["class"] = "audio-player"
+        # Turn the <a> tag into an <audio> tag
+        tag.name = "audio"
+        tag["controls"] = ""
+        # Get the audio file name
+        audio_file = tag["href"].strip()
+        audio_file = os.path.basename(audio_file)
+        # Add the audio file to the <audio> tag
+        tag["src"] = "../audio/" + audio_file
+        del tag.attrs["href"]
+        # Take all of the contents out of the span tag.
+        for child in tag.span.contents:
+            tag.append(child)
+        # Remove the <span> tag
+        tag.span.decompose()
+
 
 def pullFromLink(summary_tag, details_tag, table, link, cells):
     # Get the text
@@ -35,6 +64,7 @@ def pullFromLink(summary_tag, details_tag, table, link, cells):
     try:
         file_text = openAndGuessEncoding(readings_filename)
     except FileNotFoundError:
+        print("Could not find file: " + readings_filename)
         file_text = "<body><h1>File not found.</h1></body>"
     except UnicodeDecodeError:
         file_text = "<body><h1>Could not guess encoding.</h1></body>"
@@ -63,6 +93,7 @@ def handleAnswers(outer_soup, tag):
     try:
         file_text = openAndGuessEncoding(answers_filename)
     except FileNotFoundError:
+        print("Could not find file: " + answers_filename)
         file_text = "<body><h1>File not found.</h1></body>"
     except UnicodeDecodeError:
         file_text = "<body><h1>Could not guess encoding.</h1></body>"
@@ -71,12 +102,9 @@ def handleAnswers(outer_soup, tag):
     file_soup = bs4.BeautifulSoup(file_text, "html.parser")
     # Get just the body.
     file_body = file_soup.find("body")
-    # Strip out any ids
     # Get rid of any script, br, or form tags
     for bad_tag in file_body.find_all(["script", "br", "form"]):
         bad_tag.decompose()
-    for id_tag in file_body.find_all(id=True):
-        del id_tag["id"]
     # If the body's only child is a div, get the div's children.
     if file_body.find("div", recursive=False):
         file_body = file_body.findAll(recursive=False)
@@ -92,7 +120,6 @@ def handleAnswers(outer_soup, tag):
         # Insert the <details> tag before the paragraph
         tag.insert_before(details_tag)
 
-
 def main():
     # Open the file
     filename = sys.argv[1]
@@ -107,7 +134,7 @@ def main():
     soup = outer_soup.body.div
 
     # Remove all ID attributes
-    for tag in soup.find_all(id=True):
+    for tag in soup.find_all(True):
         del tag["id"]
 
     # Remove the following attributes:
@@ -130,29 +157,6 @@ def main():
         del tag["align"]
 
     # TODO: Fix every link. They're probably pointing to the wrong place.
-
-    # Better audio links
-    # Original structure: <p><a class="au" href=" ../../audio/fr18t46.mp3 " target="_blank"><span style="font-size: 12pt;">Écoutez.</span></a></p>
-    # New structure:
-    # <p class="audio-player">
-    #   <audio controls src="../audio/frchc119.mp3"></audio>
-    # </p>
-
-    # Find all of the audio links
-    for tag in soup.find_all("a", class_="au"):
-        # Add the audio-player class to the parent <p> tag
-        tag.parent["class"] = "audio-player"
-        # Turn the <a> tag into an <audio> tag
-        tag.name = "audio"
-        tag["controls"] = ""
-        # Get the audio file name
-        audio_file = tag["href"].strip()
-        audio_file = audio_file.replace("../../audio/", "")
-        audio_file = audio_file.replace(" ", "%20")
-        # Add the audio file to the <audio> tag
-        tag["src"] = "../audio/" + audio_file
-        # Remove the <span> tag
-        tag.span.decompose()
 
     # Remove all of the following elements from the style attribute:
     # font-family, font-size, line-height, margin-top, margin-bottom
@@ -202,9 +206,10 @@ def main():
 
             row = table.find("tr")
             cells = row.find_all("td")
-            link = cells[1].find("a")
-            if(link):
-                pullFromLink(summary_tag, details_tag, table, link, cells)
+            if len(cells) > 1:
+                link = cells[1].find("a")
+                if(link):
+                    pullFromLink(summary_tag, details_tag, table, link, cells)
 
     # When there's a centered paragraph that says "Answers",
     # Pull the text from the linked file and put it
@@ -214,18 +219,22 @@ def main():
             handleAnswers(outer_soup, tag)
             tag.decompose()
 
-    # Remove any blank style or class attributes
-    for tag in soup.find_all(style=True):
-        if tag["style"].strip() in [";", ""]:
-            del tag["style"]
-    for tag in soup.find_all(class_=True):
+    # Remove id, blank styles, and blank class attributes
+    for tag in soup.find_all("*"):
+        if "style" in tag.attrs:
+            if tag["style"].strip() in [";", ""]:
+                del tag["style"]
         if tag["class"] == []:
             del tag["class"]
+
 
     # Remove any table rows where all the cells are empty
     for tag in soup.find_all("tr"):
         if all([cell.text.strip() == "" for cell in tag.find_all("td")]):
             tag.decompose()
+
+    # Switch <a href="whatever.mp3"> to <audio> embeds.
+    fixAudioLinks(soup, outer_soup)
 
     # Prepare the HTML for pretty-printing
     unformatted_tag_list = []
