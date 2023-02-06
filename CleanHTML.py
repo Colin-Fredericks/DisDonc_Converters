@@ -1,4 +1,5 @@
 #! /usr/bin/env python3
+# encoding: utf-8
 # Python3 script to clean up HTML files
 # Usage: python3 CleanHTML.py <filename>
 # Output: <filename>.clean.html
@@ -16,6 +17,7 @@ def openAndGuessEncoding(filename):
         with open(filename, "r", encoding="utf-8") as f:
             file_text = f.read()
     except UnicodeDecodeError:
+        print("File is not UTF-8. Trying Windows 1252.")
         try:
             with open(filename, "r", encoding="cp1252") as f:
                 file_text = f.read()
@@ -23,8 +25,9 @@ def openAndGuessEncoding(filename):
             raise UnicodeDecodeError("Could not guess file encoding.")
     except FileNotFoundError:
         raise FileNotFoundError("Could not find file: " + filename)
-    
+
     return file_text
+
 
 def fixAudioLinks(soup, outer_soup):
     # Better audio links
@@ -53,8 +56,15 @@ def fixAudioLinks(soup, outer_soup):
         # Remove the <span> tag
         tag.span.decompose()
 
+    # Find every <p class="audio-player"> tag inside a table
+    # and move it (and its contents) to before that table.
+    for table in soup.find_all("table"):
+        for tag in table.find_all("p", class_="audio-player"):
+            table.insert_before(tag)
+            tag.decompose()
 
-def pullFromLink(summary_tag, details_tag, table, link, cells):
+
+def pullFromLink(summary_tag, details_wrapper, table, link, cells):
     # Get the text
     summary_tag.append(cells[0].text)
     summary_tag.append(link or cells[1].text)
@@ -78,12 +88,13 @@ def pullFromLink(summary_tag, details_tag, table, link, cells):
     for tag in file_body.find_all("script"):
         tag.decompose()
     # Insert the contents of the body into the <details> tag
-    details_tag.append(file_body)
+    details_wrapper.find("details").append(file_body)
 
     # Insert the <details> tag before the table
-    table.insert_before(details_tag)
+    table.insert_before(details_wrapper)
     # Remove the table
     table.decompose()
+
 
 def handleAnswers(outer_soup, tag):
     # Get the link
@@ -120,6 +131,7 @@ def handleAnswers(outer_soup, tag):
         # Insert the <details> tag before the paragraph
         tag.insert_before(details_tag)
 
+
 def main():
     # Open the file
     filename = sys.argv[1]
@@ -132,6 +144,26 @@ def main():
     # Remove the outer <html>, <head>, and <body> tags.
     # Just get the outer <div> tag for the <body>.
     soup = outer_soup.body.div
+
+    # If there's a table with only one row,
+    # get the link from the second <td> and the the text from both <td>s
+    # Turn the table into a <summary> tag, with the second <td> first.
+    # Pull in the file from the link and put it in the <details> tag.
+    for table in soup.find_all("table"):
+        if len(table.find_all("tr")) == 1:
+            details_wrapper = outer_soup.new_tag("div")
+            details_tag = outer_soup.new_tag("details")
+            summary_tag = outer_soup.new_tag("summary")
+            details_wrapper["class"] = ["details-wrapper"]
+            details_tag.append(summary_tag)
+            details_wrapper.append(details_tag)
+
+            row = table.find("tr")
+            cells = row.find_all("td")
+            if len(cells) > 1:
+                link = cells[1].find("a")
+                if link:
+                    pullFromLink(summary_tag, details_wrapper, table, link, cells)
 
     # Remove all ID attributes
     for tag in soup.find_all(True):
@@ -185,32 +217,6 @@ def main():
             if len(tag.find_all()) == 0:
                 tag.string = tag.text.title()
 
-    # Find every <p class="audio-player"> tag
-    # Move it and its <audio> tag to just before the table
-    for tag in soup.find_all("p", class_="audio-player"):
-        audio_tag = tag.find("audio")
-        tag.decompose()
-        table = soup.find("table")
-        table.insert_before(audio_tag)
-        table.insert_before(tag)
-
-    # If there's a table with only one row,
-    # get the link from the second <td> and the the text from both <td>s
-    # Turn the table into a <summary> tag, with the second <td> first.
-    # Pull in the file from the link and put it in the <details> tag.
-    for table in soup.find_all("table"):
-        if len(table.find_all("tr")) == 1:
-            details_tag = outer_soup.new_tag("details")
-            summary_tag = outer_soup.new_tag("summary")
-            details_tag.append(summary_tag)
-
-            row = table.find("tr")
-            cells = row.find_all("td")
-            if len(cells) > 1:
-                link = cells[1].find("a")
-                if(link):
-                    pullFromLink(summary_tag, details_tag, table, link, cells)
-
     # When there's a centered paragraph that says "Answers",
     # Pull the text from the linked file and put it
     # in a <details> tag.
@@ -226,7 +232,6 @@ def main():
                 del tag["style"]
         if tag["class"] == []:
             del tag["class"]
-
 
     # Remove any table rows where all the cells are empty
     for tag in soup.find_all("tr"):
@@ -266,7 +271,7 @@ def main():
     pretty_markup = soup.prettify().format(unformatted_tag_list=unformatted_tag_list)
 
     # Write the new file, pretty-printed.
-    with open(filename[:-5] + ".clean.html", "w") as f:
+    with open(filename[:-5] + ".clean.html", "w", encoding="utf-8") as f:
         f.write(pretty_markup)
         # print the location of the file
         print("File written to {0}".format(filename[:-5] + ".clean.html"))
