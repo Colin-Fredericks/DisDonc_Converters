@@ -57,7 +57,7 @@ def processReadings(filename: str):
     Returns: a new BeautifulSoup object with the new structure
     """
     # Open the file using with
-    with(open(filename, "r")) as f:
+    with(open(filename, "r", errors="ignore")) as f:
         soup = bs4.BeautifulSoup(f, "html.parser")
     
     # Get the table
@@ -164,7 +164,7 @@ def main():
     # Read the files with BeautifulSoup
     for filename in files:
         print("Reading %s..." % filename)
-        with(open(filename, "r")) as f:
+        with(open(filename, "r", errors="ignore")) as f:
             soup = bs4.BeautifulSoup(f, "html.parser")
 
         # Process the file
