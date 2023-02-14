@@ -1,0 +1,9 @@
+var glo = new Array();function buildGlo() { 
+glo[33149] = new Glossary('','most');
+glo[33150] = new Glossary('','tomb');
+glo[33151] = new Glossary('','<i>fonder</i> to found');
+glo[33152] = new Glossary('','<i>soigner</i> to care for');
+glo[33153] = new Glossary('','(feminine plural)  ashes');
+glo[33154] = new Glossary('','coffin');
+glo[33155] = new Glossary('','in addition to');
+glo[33156] = new Glossary('','complex, whole, group'); } buildGlo (); 
