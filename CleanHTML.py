@@ -210,13 +210,6 @@ def main():
         classes = [c for c in classes if c not in ["rea", "au"]]
         tag["class"] = classes
 
-    # If the text of a tag is all-caps, make it title case.
-    for tag in soup.find_all():
-        if tag.text.isupper():
-            # Only replace the innermost tags
-            if len(tag.find_all()) == 0:
-                tag.string = tag.text.title()
-
     # When there's a centered paragraph that says "Answers",
     # Pull the text from the linked file and put it
     # in a <details> tag.
@@ -226,12 +219,20 @@ def main():
             tag.decompose()
 
     # Remove id, blank styles, and blank class attributes
+    # Remove any completely empty tags except for <p> and <br>
+    # If the text of a tag is all-caps, make it title case.
     for tag in soup.find_all("*"):
         if "style" in tag.attrs:
             if tag["style"].strip() in [";", ""]:
                 del tag["style"]
         if tag["class"] == []:
             del tag["class"]
+        if tag.name not in ["p", "br"] and tag.text.strip() == "":
+            tag.decompose()
+        if tag.text.isupper():
+            # Only replace the innermost tags
+            if len(tag.find_all()) == 0:
+                tag.string = tag.text.title()
 
     # Remove any table rows where all the cells are empty
     for tag in soup.find_all("tr"):
