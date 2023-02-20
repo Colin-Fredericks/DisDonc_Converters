@@ -8,6 +8,9 @@ import os
 import sys
 import bs4
 
+# TODO: Better filepath handling so it doesn't matter where
+# the script is run from.
+
 # Try to open the file.
 # If it doesn't exist, change the path to readings/ and try that.
 def openAndGuessEncoding(filename):
