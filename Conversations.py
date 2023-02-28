@@ -120,6 +120,9 @@ def processFile(soup: bs4.BeautifulSoup):
         except TypeError:
             # If there's no readings, skip this row
             continue
+        except KeyError:
+            # If we can't find an a or its href, skip this row
+            continue
         readings_soup = processReadings(readings_filename)
         # We're going to include the readings in a details tag
         details = new_soup.new_tag("details", **{"class": "simple"})
