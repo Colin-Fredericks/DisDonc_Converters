@@ -189,9 +189,9 @@ details.answer-bar summary {
   padding: 2px;
 }
 
-.three-grid div:nth-of-type(4n + 1),
-.three-grid div:nth-of-type(4n + 2),
-.three-grid div:nth-of-type(4n + 3) {
+.three-grid div:nth-of-type(6n + 1),
+.three-grid div:nth-of-type(6n + 2),
+.three-grid div:nth-of-type(6n + 3) {
   background-color: wheat;
 }
 
@@ -204,10 +204,10 @@ details.answer-bar summary {
   padding: 2px;
 }
 
-.four-grid div:nth-of-type(4n + 1),
-.four-grid div:nth-of-type(4n + 2),
-.four-grid div:nth-of-type(4n + 3),
-.four-grid div:nth-of-type(4n + 4) {
+.four-grid div:nth-of-type(8n + 1),
+.four-grid div:nth-of-type(8n + 2),
+.four-grid div:nth-of-type(8n + 3),
+.four-grid div:nth-of-type(8n + 4) {
   background-color: wheat;
 }
 
