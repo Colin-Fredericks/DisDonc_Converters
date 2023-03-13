@@ -189,6 +189,7 @@ details.answer-bar summary {
 .three-grid {
   display: grid;
   grid-template-columns: auto auto auto;
+  width: 90%;
   margin: 1em 0 3em 0;
 }
 
@@ -205,6 +206,7 @@ details.answer-bar summary {
 .four-grid {
   display: grid;
   grid-template-columns: auto auto auto auto;
+  width: 100%;
   margin: 1em 0 3em 0;
 }
 

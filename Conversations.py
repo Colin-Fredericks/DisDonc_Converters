@@ -63,7 +63,7 @@ def processReadings(filename: str):
     # Get the table
     table = soup.find("table")
     # Create a new soup to hold the new structure
-    new_soup = bs4.BeautifulSoup()
+    new_soup = bs4.BeautifulSoup("", "html.parser")
 
     # Each row turns into a dt/dd pair.
     rows = table.findAll("tr")
@@ -99,7 +99,7 @@ def processFile(soup: bs4.BeautifulSoup):
     # Get the table
     table = soup.find("table")
     # Create a new soup to hold the new structure
-    new_soup = bs4.BeautifulSoup()
+    new_soup = bs4.BeautifulSoup("", "html.parser")
     # The new structure will be a div with class "conversation"
     conversation = new_soup.new_tag("div", **{"class": "conversation"})
     new_soup.append(conversation)
@@ -107,6 +107,16 @@ def processFile(soup: bs4.BeautifulSoup):
     # Go through the table row by row.
     rows = table.findAll("tr")
     for row in rows:
+        # If there's only one td, it's a comment or stage direction.
+        if len(row.findAll("td")) == 1:
+            # Add the comment to the new soup
+            comment = new_soup.new_tag("p")
+            comment.string = row.find("td").text
+            # This is inside a 3-wide grid, so we need to span the columns.
+            # Add "grid-column: span 3;" to the style.
+            comment["style"] = comment["style"] + "grid-column: span 3;"
+            conversation.append(comment)
+            continue
         # In each row, the second TD has the speaker
         speaker = row.findAll("td")[1]
         # Add the speaker to the new soup
@@ -174,7 +184,7 @@ def main():
         new_soup = processFile(soup)
 
         # Wrap that in a standard HTML structure
-        html = bs4.BeautifulSoup()
+        html = bs4.BeautifulSoup("", "html.parser")
         html.append(new_soup.new_tag("doctype", **{"html": ""}))
         html.append(new_soup.new_tag("html"))
         html.html.append(new_soup.new_tag("head"))
