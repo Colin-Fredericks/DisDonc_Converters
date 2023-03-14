@@ -114,7 +114,10 @@ def processFile(soup: bs4.BeautifulSoup):
             comment.string = row.find("td").text
             # This is inside a 3-wide grid, so we need to span the columns.
             # Add "grid-column: span 3;" to the style.
-            comment["style"] = comment["style"] + "grid-column: span 3;"
+            if "style" in comment:
+                comment["style"] = comment["style"] + "grid-column: span 3;"
+            else:
+                comment["style"] = "grid-column: span 3;"
             conversation.append(comment)
             continue
         # In each row, the second TD has the speaker
