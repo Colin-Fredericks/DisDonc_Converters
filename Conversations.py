@@ -142,13 +142,19 @@ def processFile(soup: bs4.BeautifulSoup):
         conversation.append(details)
         # The summary is the speaker's sentence, from the span next to the audio.
         summary = new_soup.new_tag("summary")
-        summary.string = row.findAll("td")[2].find("span").text
+        if len(row.findAll("td"))>2:
+            summary.string = row.findAll("td")[2].find("span").text
+        else:
+            summary.string = "No summary"
         details.append(summary)
         # The details will contain the readings
         details.append(readings_soup)
 
         # The third TD has the audio
-        audio_filename = row.findAll("td")[2].find("a")["href"]
+        if len(row.findAll("td")) >2:
+            audio_filename = row.findAll("td")[2].find("a")["href"]
+        else:
+            audio_filename = "No audio"
         audio = new_soup.new_tag("p", **{"class": "audio-player"})
         audio.append(new_soup.new_tag("audio", **{"controls": "", "src": audio_filename}))
         conversation.append(audio)
