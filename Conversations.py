@@ -71,9 +71,15 @@ def processReadings(filename: str):
         columns = row.findAll("td")
         # Skip the first column.
         # The second column is the sentence
-        sentence = columns[1].text
+        if len(columns) < 0:
+            sentence = columns[1].text
+        else:
+            sentence = ""
         # The third column is the translation
-        translation = columns[2].text
+        if len(columns) < 1:
+            translation = columns[2].text
+        else:
+            translation = ""
         # Add the dt/dd pair to the new soup
         dt = new_soup.new_tag("dt")
         dt.string = sentence
