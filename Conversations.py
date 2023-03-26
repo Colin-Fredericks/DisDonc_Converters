@@ -56,6 +56,7 @@ def processReadings(filename: str):
     Keyword arguments: filename -- the name of the readings file
     Returns: a new BeautifulSoup object with the new structure
     """
+    print(filename)
     # Open the file using with
     with(open(filename, "r", errors="ignore")) as f:
         soup = bs4.BeautifulSoup(f, "html.parser")
@@ -148,8 +149,9 @@ def processFile(soup: bs4.BeautifulSoup):
         conversation.append(details)
         # The summary is the speaker's sentence, from the span next to the audio.
         summary = new_soup.new_tag("summary")
-        if len(row.findAll("td"))>2:
-            summary.string = row.findAll("td")[2].find("span").text
+        if len(row.findAll("td")) > 2:
+            if row.findAll("td")[2].find("span") is not None:
+                summary.string = row.findAll("td")[2].find("span").text
         else:
             summary.string = "No summary"
         details.append(summary)

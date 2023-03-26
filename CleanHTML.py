@@ -102,6 +102,9 @@ def pullFromLink(summary_tag, details_wrapper, table, link, cells):
 def handleAnswers(outer_soup, tag):
     # Get the link
     link = tag.find("a")
+    # If there's no href on the link, we're done.
+    if not link or not link["href"]:
+        return
     # Get the text
     answers_filename = link["href"].strip()
     try:
