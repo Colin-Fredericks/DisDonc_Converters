@@ -48,6 +48,10 @@ def main():
                 for td in row.findAll("td"):
                     div = soup.new_tag("div")
                     # Remove any td or p wrapping the content
+
+                    # TODO: This is not properly extracting the contents
+                    # of the td or paragraph, and is dropping everything
+                    # after the first tag therein. Fix that.
                     if td.find("td") is not None:
                         td = td.find("td").contents[0]
                     if td.find("p") is not None:
