@@ -72,12 +72,13 @@ def processReadings(filename: str):
         columns = row.findAll("td")
         # Skip the first column.
         # The second column is the sentence
-        if len(columns) < 0:
+        print(len(columns))
+        if len(columns) > 1:
             sentence = columns[1].text
         else:
             sentence = ""
         # The third column is the translation
-        if len(columns) < 1:
+        if len(columns) > 2:
             translation = columns[2].text
         else:
             translation = ""
@@ -147,11 +148,12 @@ def processFile(soup: bs4.BeautifulSoup):
         # We're going to include the readings in a details tag
         details = new_soup.new_tag("details", **{"class": "simple"})
         conversation.append(details)
-        # The summary is the speaker's sentence, from the span next to the audio.
+        # The summary is the speaker's sentence, from the text next to the audio.
         summary = new_soup.new_tag("summary")
         if len(row.findAll("td")) > 2:
-            if row.findAll("td")[2].find("span") is not None:
-                summary.string = row.findAll("td")[2].find("span").text
+            if row.findAll("td")[2] is not None:
+                print(row.findAll("td")[2])
+                summary.string = row.findAll("td")[2].text
         else:
             summary.string = "No summary"
         details.append(summary)
