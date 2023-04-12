@@ -47,18 +47,18 @@ def main():
             for row in table.findAll("tr"):
                 for td in row.findAll("td"):
                     div = soup.new_tag("div")
+
                     # Remove any td or p wrapping the content
+                    if td.p:
+                        div.append(td.p)
+                    else:
+                        div.append(td)
 
-                    # TODO: This is not properly extracting the contents
-                    # of the td or paragraph, and is dropping everything
-                    # after the first tag therein. Fix that.
-                    if td.find("td") is not None:
-                        td = td.find("td").contents[0]
-                    if td.find("p") is not None:
-                        td = td.find("p").contents[0]
-                    div.append(td)
+                    # If this div has a <p> as its only child, remove the <p>
+                    if len(div.contents) == 1 and div.contents[0].name == "p":
+                        div.contents[0].unwrap()
+
                     grid.append(div)
-
 
             # Replace the table with the grid
             table.replaceWith(grid)
