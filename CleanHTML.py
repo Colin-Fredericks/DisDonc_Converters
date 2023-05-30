@@ -250,6 +250,10 @@ def main():
     # Switch <a href="whatever.mp3"> to <audio> embeds.
     fixAudioLinks(soup, outer_soup)
 
+    # Remove any <span> tags with no attributes
+    for tag in soup.find_all("span", attrs=False):
+        tag.unwrap()
+
     # Prepare the HTML for pretty-printing
     unformatted_tag_list = []
 
