@@ -63,12 +63,43 @@ def main():
             # Replace the table with the grid
             table.replaceWith(grid)
 
+
+
+        # Prepare the HTML for pretty-printing
+        unformatted_tag_list = []
+
+        for i, tag in enumerate(
+            soup.find_all(
+                [
+                    "a",
+                    "b",
+                    "dd",
+                    "dt",
+                    "h1",
+                    "h2",
+                    "h3",
+                    "h4",
+                    "h5",
+                    "h6",
+                    "i",
+                    "p",
+                    "span",
+                    "strong",
+                    "em",
+                ]
+            )
+        ):
+            unformatted_tag_list.append(str(tag))
+            tag.replace_with("{" + "unformatted_tag_list[{0}]".format(i) + "}")
+
+        pretty_markup = soup.prettify().format(unformatted_tag_list=unformatted_tag_list)
+
         # Write the new file
         new_filename = filename[:-5] + ".new.html"
         print("Writing %s..." % new_filename)
-        with (open(new_filename, "w")) as f:
+        with (open(new_filename, "w", encoding="utf-8")) as f:
             # Write the HTML structure
-            f.write(soup.prettify())
+            f.write(pretty_markup)
 
 
 # If called as a package, use main()
