@@ -59,12 +59,34 @@ def fixAudioLinks(soup, outer_soup):
         # Remove the <span> tag
         tag.span.decompose()
 
+    # Find all links to files in /audio/
+    for tag in soup.find_all("a"):
+        if "/audio/" in tag["href"]:
+            print(tag)
+            # Get the audio file name
+            audio_file = tag["href"].strip()
+            audio_file = os.path.basename(audio_file)
+            # Get the enclosing <p> tag
+            parent = tag.parent
+            # Turn the <a> tag into an <audio> tag
+            tag.name = "audio"
+            tag["controls"] = ""
+            # Add the audio file to the <audio> tag
+            tag["src"] = "../audio/" + audio_file
+            del tag.attrs["href"]
+            # Remove all attributes from the <p> tag
+            parent.attrs = {}
+            # Add the audio-player class to the <p> tag
+            parent["class"] = "audio-player"
+
     # Find every <p class="audio-player"> tag inside a table
     # and move it (and its contents) to before that table.
     for table in soup.find_all("table"):
         for tag in table.find_all("p", class_="audio-player"):
             table.insert_before(tag)
             tag.decompose()
+    
+    return soup
 
 
 def pullFromLink(summary_tag, details_wrapper, table, link, cells):
@@ -247,8 +269,8 @@ def main():
         if all([cell.text.strip() == "" for cell in tag.find_all("td")]):
             tag.decompose()
 
-    # Switch <a href="whatever.mp3"> to <audio> embeds.
-    fixAudioLinks(soup, outer_soup)
+    # Switch <a href="../../audio/whatever.mp3"> to <audio> embeds.
+    soup = fixAudioLinks(soup, outer_soup)
 
     # Remove any <span> tags with no attributes
     for tag in soup.find_all("span", attrs=False):
