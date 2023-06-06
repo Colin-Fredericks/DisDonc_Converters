@@ -226,6 +226,16 @@ table.striped tr:nth-of-type(2n + 1) {
   background-color: wheat;
 }
 
+.list-of-images {
+  font-size: larger;
+}
+
+.list-of-images li img {
+  vertical-align: top; 
+  margin: 0 1em 1em 1em;
+  border: 3px solid black;
+}
+
 .answer-button {
   border: 1px outset tan;
   background-color: thistle;
