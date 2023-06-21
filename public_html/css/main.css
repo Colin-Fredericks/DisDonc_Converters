@@ -175,6 +175,17 @@ table.striped tr:nth-of-type(2n + 1) {
   background-color: wheat;
 }
 
+.one-grid {
+  display: grid;
+  grid-template-columns: auto;
+  width: 70%;
+  margin: 1em 0 3em 0;
+}
+
+.one-grid div:nth-of-type(2n + 1){
+  background-color: wheat;
+}
+
 .two-grid {
   display: grid;
   grid-template-columns: auto auto;
