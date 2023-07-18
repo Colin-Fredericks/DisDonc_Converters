@@ -57,10 +57,10 @@ def processReadings(filename: str):
     Returns: a new BeautifulSoup object with the new structure
     """
     print(filename)
-    # Open the file using with
-    with(open(filename, "r", errors="ignore")) as f:
-        soup = bs4.BeautifulSoup(f, "html.parser")
-    
+    # Open the file using with()
+    with(open(filename, "r", errors="ignore", encoding="Windows-1252")) as f:
+        soup = bs4.BeautifulSoup(f, "html.parser", from_encoding="Windows-1252")
+
     # Get the table
     table = soup.find("table")
     # Create a new soup to hold the new structure
@@ -214,7 +214,7 @@ def main():
         # Write the new file
         new_filename = filename[:-5] + ".new.html"
         print("Writing %s..." % new_filename)
-        with(open(new_filename, "w")) as f:
+        with(open(new_filename, "w", encoding="utf-8")) as f:
             # Write the HTML structure
             f.write(html.prettify())
 
