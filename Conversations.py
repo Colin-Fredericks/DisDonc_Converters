@@ -72,7 +72,7 @@ def processReadings(filename: str):
         columns = row.findAll("td")
         # Skip the first column.
         # The second column is the sentence
-        print(len(columns))
+        # print(len(columns))
         if len(columns) > 1:
             sentence = columns[1].text
         else:
@@ -152,7 +152,7 @@ def processFile(soup: bs4.BeautifulSoup):
         summary = new_soup.new_tag("summary")
         if len(row.findAll("td")) > 2:
             if row.findAll("td")[2] is not None:
-                print(row.findAll("td")[2])
+                # print(row.findAll("td")[2])
                 summary.string = row.findAll("td")[2].text
         else:
             summary.string = "No summary"
