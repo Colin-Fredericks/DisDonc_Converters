@@ -1,6 +1,20 @@
-/* Roboto font for headers, PT Serif for body. */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+/* Import local copy of PT Serif */
+@font-face {
+  font-family: 'PT Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-variation-settings: 'wght' 400;
+  src: url('../fonts/PTSerif-Regular.ttf') format('truetype');
+}
+
+/* Import local copy of Raleway variable-width font */
+@font-face {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  font-variation-settings: 'wght' 400;
+  src: url('../fonts/Raleway-VariableFont_wght.ttf') format('truetype');
+}
 
 /* Global styles */
 :root {
@@ -17,8 +31,9 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  font-family: 'Raleway', Helvetica, Arial, sans-serif;
   font-weight: 700;
+  font-variation-settings: 'wght' 700;
   color: var(--header-color);
 }
 
@@ -54,8 +69,9 @@ main details {
 }
 
 summary {
-  font-family: 'Roboto', Arial, Helvetica, sans-serif;
-  font-weight: 400;
+  font-family: 'Raleway', Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  font-variation-settings: 'wght' 500;
   font-variant: small-caps;
   color: var(--header-color);
   cursor: pointer;
@@ -84,8 +100,9 @@ table td {
 #side-nav-menu {
   list-style: none;
   padding: 10px;
-  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  font-family: 'Raleway', Helvetica, Arial, sans-serif;
   font-weight: 400;
+  font-variation-settings: 'wght' 400;
 }
 
 #side-nav-menu ul {
@@ -126,6 +143,7 @@ details.show-answer {
   width: auto;
   border: none;
   font-weight: bold;
+  font-variation-settings: 'wght' 700;
   background-color: transparent;
 }
 
@@ -138,6 +156,7 @@ details.show-answer summary {
   display: inline;
   font-family: 'PT Serif', Georgia, 'Times New Roman', Times, serif;
   font-weight: normal;
+  font-variation-settings: 'wght' 400;
   font-variant: normal;
   color: var(--header-color);
   background-color: transparent;
@@ -149,12 +168,14 @@ details.answer-bar {
   width: 80%;
   border: none;
   font-weight: bold;
+  font-variation-settings: 'wght' 700;
   background-color: peru;
 }
 
 details.answer-bar summary {
   font-family: 'PT Serif', Georgia, 'Times New Roman', Times, serif;
   font-weight: normal;
+  font-variation-settings: 'wght' 400;
   font-variant: normal;
   margin-left: -4px;
   color: var(--header-color);
@@ -316,7 +337,7 @@ details .widebar {
   margin: 1em -8% 1em 1em;
   float: right;
   width: 15em;
-  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  font-family: 'Raleway', Helvetica, Arial, sans-serif;
 }
 
 #toc ul {
