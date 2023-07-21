@@ -72,9 +72,16 @@ summary {
   font-family: 'Raleway', Helvetica, Arial, sans-serif;
   font-weight: 600;
   font-variation-settings: 'wght' 500;
-  font-variant: small-caps;
   color: var(--header-color);
   cursor: pointer;
+}
+
+div.details-wrapper > details > summary {
+  font-variant: small-caps;
+}
+
+details.simple > summary {
+  font-family: 'PT Serif', Georgia, 'Times New Roman', Times, serif;
 }
 
 table {
