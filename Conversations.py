@@ -51,6 +51,26 @@ Original format:
 Note that the new format is a 3-wide grid, not a table or a bunch of nested divs.
 """
 
+def openAndGuessEncoding(filename):
+    encoding = ""
+    try:
+        # Check for utf-8. Backup is Windows 1252.
+        with open(filename, "r", encoding="utf-8") as f:
+            file_text = f.read()
+            encoding = "utf-8"
+    except UnicodeDecodeError:
+        print("File is not UTF-8. Trying Windows 1252.")
+        try:
+            with open(filename, "r", encoding="cp1252") as f:
+                file_text = f.read()
+                encoding = "cp1252"
+        except UnicodeDecodeError():
+            raise UnicodeDecodeError("Could not guess file encoding.")
+    except FileNotFoundError:
+        raise FileNotFoundError("Could not find file: " + filename)
+
+    return file_text, encoding
+
 def processReadings(filename: str):
     """Processes a readings file so that we can include it in our new HTML structure.
     Keyword arguments: filename -- the name of the readings file
@@ -58,8 +78,8 @@ def processReadings(filename: str):
     """
     print(filename)
     # Open the file using with()
-    with(open(filename, "r", errors="ignore", encoding="Windows-1252")) as f:
-        soup = bs4.BeautifulSoup(f, "html.parser", from_encoding="Windows-1252")
+    f, encoding = openAndGuessEncoding(filename)
+    soup = bs4.BeautifulSoup(f, "html.parser", from_encoding=encoding)
 
     # Get the table
     table = soup.find("table")
