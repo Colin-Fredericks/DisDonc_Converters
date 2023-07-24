@@ -41,6 +41,10 @@ def main():
         for tag in audio_tags:
             audio_list2.append(tag)
 
+    # If either of them has "No audio" in it, remove all instances.
+    audio_list1 = [x for x in audio_list1 if "No audio" not in x["src"]]
+    audio_list2 = [x for x in audio_list2 if "No audio" not in x["src"]]
+
     # If the lists are the same size,
     if len(audio_list1) == len(audio_list2):
         # Go through the lists and replace the src attributes in the second list.
@@ -64,18 +68,20 @@ def main():
     else:
         print("There are different numbers of audio tags in these files.")
         all_tags = []
-        # Pad out the shorter list with blank entries to make them the same size.
+        # Pad out the shorter list with blank audio tags to make them the same size.
         if len(audio_list1) > len(audio_list2):
             for i in range(len(audio_list1) - len(audio_list2)):
-                audio_list2.append("")
+                audio_list2.append(bs.BeautifulSoup("<audio src='none'></audio>", "html.parser"))
         else:
             for i in range(len(audio_list2) - len(audio_list1)):
-                audio_list1.append("")
+                audio_list2.append(bs.BeautifulSoup("<audio src='none'></audio>", "html.parser"))
 
         # Make a CSV log file with the audio src attributes from both files.
+        print(len(audio_list1), len(audio_list2))
         with open(file1[:-5] + "_log.csv", "w") as f:
             for i in range(len(audio_list1)):
-                f.write(audio_list1[i]["src"] + "," + audio_list2[i]["src"] + "\n")
+                print(audio_list1[i], audio_list2[i])
+                f.write(str(audio_list1[i]) + "," + str(audio_list2[i]) + "\n")
         print("Log file created: " + file1[:-5] + "_log.csv")
 
 
