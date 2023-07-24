@@ -40,14 +40,17 @@ def main():
             for line_number, line in enumerate(f, 1):
                 if line_number not in line_numbers:
                     for tag in audio_tags:
-                        if tag["src"] in line:
-                            line_numbers.append(line_number)
-                            if "mp3" not in tag["src"]:
-                                missing_mp3.append(tag["src"])
-                            else:
-                                source_list.append(tag["src"][:-4])
-                                missing_mp3.append("ok")
-                            break
+                        if "src" in tag.attrs:
+                            if tag["src"] in line:
+                                line_numbers.append(line_number)
+                                if "mp3" not in tag["src"]:
+                                    missing_mp3.append(tag["src"])
+                                else:
+                                    source_list.append(tag["src"][:-4])
+                                    missing_mp3.append("ok")
+                                break
+                        else:
+                            print("No src attribute in this tag:", tag)
             
 
         # Go down the lists and see if any of the src attributes are out of sequence.
