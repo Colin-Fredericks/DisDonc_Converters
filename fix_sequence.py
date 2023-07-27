@@ -42,46 +42,46 @@ def main():
             audio_list2.append(tag)
 
     # If either of them has "No audio" in it, remove all instances.
-    audio_list1 = [x for x in audio_list1 if "No audio" not in x["src"]]
-    audio_list2 = [x for x in audio_list2 if "No audio" not in x["src"]]
+    correct_list = [x for x in audio_list1 if "No audio" not in x["src"]]
+    busted_list = [x for x in audio_list2 if "No audio" not in x["src"]]
 
     # If the lists are the same size,
-    if len(audio_list1) == len(audio_list2):
+    if len(correct_list) == len(busted_list):
         # Go through the lists and replace the src attributes in the second list.
-        for i in range(len(audio_list1)):
+        for i in range(len(correct_list)):
             # Strip whitespace and fix misdirected links while we're at it.
-            audio_list1[i]["src"] = audio_list1[i]["src"].strip()
-            audio_list1[i]["src"] = audio_list1[i]["src"].replace("../../", "../")
-            if ".mp3" not in audio_list1[i]["src"]:
-                audio_list1[i]["src"] += ".mp3"
-            audio_list2[i]["src"] = audio_list1[i]["src"]
+            correct_list[i]["src"] = correct_list[i]["src"].strip()
+            correct_list[i]["src"] = correct_list[i]["src"].replace("../../", "../")
+            if ".mp3" not in correct_list[i]["src"]:
+                correct_list[i]["src"] += ".mp3"
+            busted_list[i]["src"] = correct_list[i]["src"]
         # Then replace those audio tags in the file.
         with open(file2, "r") as f:
             soup = bs.BeautifulSoup(f, "html.parser")
             audio_tags = soup.find_all("audio")
             for i in range(len(audio_tags)):
-                audio_tags[i].replace_with(audio_list2[i])
+                audio_tags[i].replace_with(busted_list[i])
         # Write the file.
         with open(file2[:-5] + "_fixed.html", "w") as f:
             f.write(str(soup))
         print("Fixed file created: " + file2[:-5] + "_fixed.html")
     else:
         print("There are different numbers of audio tags in these files.")
+        print(len(correct_list), len(busted_list))
         all_tags = []
         # Pad out the shorter list with blank audio tags to make them the same size.
-        if len(audio_list1) > len(audio_list2):
-            for i in range(len(audio_list1) - len(audio_list2)):
-                audio_list2.append(bs.BeautifulSoup("<audio src='none'></audio>", "html.parser"))
+        if len(correct_list) > len(busted_list):
+            for i in range(len(correct_list) - len(busted_list)):
+                busted_list.append(bs.BeautifulSoup("<audio src='none'></audio>", "html.parser"))
         else:
-            for i in range(len(audio_list2) - len(audio_list1)):
-                audio_list2.append(bs.BeautifulSoup("<audio src='none'></audio>", "html.parser"))
+            for i in range(len(busted_list) - len(correct_list)):
+                correct_list.append(bs.BeautifulSoup("<audio src='none'></audio>", "html.parser"))
 
         # Make a CSV log file with the audio src attributes from both files.
-        print(len(audio_list1), len(audio_list2))
         with open(file1[:-5] + "_log.csv", "w") as f:
-            for i in range(len(audio_list1)):
-                print(audio_list1[i], audio_list2[i])
-                f.write(str(audio_list1[i]) + "," + str(audio_list2[i]) + "\n")
+            for i in range(len(correct_list)):
+                print(correct_list[i], busted_list[i])
+                f.write(str(correct_list[i]) + "," + str(busted_list[i]) + "\n")
         print("Log file created: " + file1[:-5] + "_log.csv")
 
 
