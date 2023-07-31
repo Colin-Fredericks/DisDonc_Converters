@@ -59,20 +59,25 @@ function makeTOC() {
   let open_menu = document.createElement('span');
   open_menu.classList.add('open-toc');
   open_menu.setAttribute('aria-label', 'Open Table of Contents');
-  open_menu.textContent = '≡';
+  open_menu.textContent = ' ≡';
   menu_label.appendChild(open_menu);
 
   // Add a span for the close menu button
   let close_menu = document.createElement('span');
   close_menu.classList.add('close-toc');
   close_menu.setAttribute('aria-label', 'Close Table of Contents');
-  close_menu.textContent = '╳';
+  close_menu.textContent = ' ╳';
   menu_label.appendChild(close_menu);
+
+  // Give the TOC a box to hold the header
+  let toc_header_box = document.createElement('div');
+  toc_header_box.id = 'toc_header_box';
 
   // Add a title for the table of contents
   let toc_title = document.createElement('h1');
   toc_title.textContent = 'Table of Contents';
-  toc.appendChild(toc_title);
+  toc.appendChild(toc_header_box);
+  toc_header_box.appendChild(toc_title);
 
   // Add a container for the table of contents
   let toc_menu = document.createElement('div');
