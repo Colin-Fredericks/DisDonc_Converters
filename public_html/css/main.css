@@ -37,6 +37,10 @@ h6 {
   color: var(--header-color);
 }
 
+h1:first-of-type {
+  margin-bottom: -0.25em;
+}
+
 body {
   font-family: 'PT Serif', Georgia, 'Times New Roman', Times, serif;
   font-size: large;
@@ -47,10 +51,14 @@ body {
 
 a {
   color:firebrick;
+  font-weight: 500;
+  font-variation-settings: 'wght' 500;
 }
 
 a:visited {
   color: darkred;
+  font-weight: 300;
+  font-variation-settings: 'wght' 300;
 }
 
 main {
@@ -353,6 +361,8 @@ details .widebar {
   float: right;
   width: 15em;
   font-family: 'Raleway', Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-variation-settings: 'wght' 500;
 }
 
 #toc ul {
