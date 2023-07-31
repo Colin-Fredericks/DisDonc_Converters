@@ -45,6 +45,14 @@ body {
   width: 90%;
 }
 
+a {
+  color:firebrick;
+}
+
+a:visited {
+  color: darkred;
+}
+
 main {
   padding-left: 1.5em;
   border-left: 20px solid rgb(220, 214, 200);
