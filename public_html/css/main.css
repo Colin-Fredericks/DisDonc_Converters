@@ -63,7 +63,7 @@ a:visited {
 }
 
 main {
-  padding-left: 1.5em;
+  padding: 1em 1em 1em 1.5em;
   border-left: 20px solid rgb(220, 214, 200);
 }
 
@@ -362,12 +362,13 @@ details .widebar {
 
 #toc {
   border: 6px solid var(--thin-border);
-  margin: 1em -8% 1em 1em;
+  margin: 0 -8% 1em 1em;
   float: right;
   width: 15em;
   font-family: "Raleway", Helvetica, Arial, sans-serif;
   font-weight: 500;
   font-variation-settings: "wght" 500;
+  background-color: var(--thin-border);
 }
 
 #toc ul {
@@ -424,8 +425,39 @@ details .widebar {
 }
 
 #toc_menu {
-  padding: 0em 0.5em 0.5em 1em;
+  padding: .5em 0.5em 0.5em 1em;
+  background-color: var(--background-color);
 }
+
+#top_nav{
+  display: none;
+  margin-right: -8%;
+  text-align: right;
+  border-bottom: 2px solid saddlebrown;
+  float: right;
+  width: 100%;
+}
+
+#top_nav select {
+  color: var(--header-color);
+  background-color: var(--thin-border);
+  width: 100%;
+  border-radius: 0;
+  padding: .5em;
+  border: none;
+  font-size: inherit;
+}
+
+select {
+  background: url("data:image/svg+xml,<svg height='15px' width='15px' viewBox='0 0 16 16' fill='%23000000' xmlns='http://www.w3.org/2000/svg'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>") no-repeat;
+  background-position: left calc(100% - 0.75rem) center !important;
+  -moz-appearance:none !important;
+  -webkit-appearance: none !important; 
+  appearance: none !important;
+  padding-right: 2rem !important;
+}
+
+
 
 .sr-only {
   position: absolute;
@@ -439,6 +471,7 @@ details .widebar {
 .menu_control,
 #menu_control {
   display: none;
+  padding-right: 0.25em;
 }
 
 .mcq_correct span {
@@ -488,8 +521,7 @@ details .widebar {
   }
 
   #toc {
-    float: right;
-    width: 90%;
+    width: 100%;
     /* padding: 10px; */
     text-align: right;
   }
@@ -497,6 +529,7 @@ details .widebar {
   #toc_menu {
     text-align: left;
     display: none;
+    padding-top: 0.25em;
   }
 
   #toc h1 {
@@ -507,7 +540,7 @@ details .widebar {
 @media screen and (max-width: 900px) {
   .sidebar {
     float: none;
-    width: 80%;
+    width: 100%;
     margin: 1em auto 1em auto;
   }
 }
@@ -517,13 +550,24 @@ details .widebar {
     display: none;
   }
 
+  #top_nav {
+    display: block;
+    background-color: var(--thin-border);
+    padding: 0.25em;
+  }
+
   #content_grid {
     display: block;
   }
 
   .sidebar {
-    float: none;
     width: 80%;
     margin: 1em auto 1em auto;
   }
+
+  #toc {
+    border: none;
+    padding: 0.25em;
+  }
+
 }

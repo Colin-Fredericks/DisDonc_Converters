@@ -13,10 +13,12 @@ window.onload = function () {
     });
   });
 
+  // Insert the top navigation bar.
   // Make the table of contents.
   // Don't add it to any page with the class "no_toc"
   if (!document.querySelector('body').classList.contains('no_toc')) {
     makeTOC();
+    makeTopNav();
   }
 };
 
@@ -34,6 +36,7 @@ function makeTOC() {
   let toc = document.createElement('div');
   toc.id = 'toc';
   let main = document.querySelector('main');
+  console.log(main);
   main.insertBefore(toc, main.firstChild);
 
   // Add a skip to main content link
@@ -113,4 +116,57 @@ function makeTOC() {
     li.appendChild(a);
     toc_list.appendChild(li);
   }
+}
+
+/**
+ * This function creates a top navigation bar for the page.
+ * It shows up only when the screen width is small enough.
+ * 
+ * @param {void}
+ * @returns {void}
+ */
+function makeTopNav() {
+  console.log('makeTopNav()');
+
+  // Make the container for the top navigation bar.
+  let nav = document.createElement('nav');
+  nav.id = 'top_nav';
+  let main = document.querySelector('main');
+  console.log(main);
+  main.insertBefore(nav, main.firstChild);
+
+  // Add the select element
+  let select = document.createElement('select');
+  select.setAttribute('onchange', 'topNav()');
+  nav.appendChild(select);
+
+  // Add the options
+  // There are 36 preparations and the index.html page
+  let index = document.createElement('option');
+  index.value = '../index.html';
+  index.textContent = 'Homepage';
+  select.appendChild(index);
+  for(let i = 1; i <= 36; i++){
+    let option = document.createElement('option');
+    option.value = 'prep' + i + '.html';
+    option.textContent = 'Préparation ' + i;
+    select.appendChild(option);
+  } 
+}
+
+/**
+ * Follow the links from the top navigation bar
+ */
+function topNav(){
+  let select = document.querySelector('#top_nav select');
+  let url = select.options[select.selectedIndex].value;
+
+  // If the user selected the current page, do nothing
+  if(url == window.location.href){
+    return;
+  }
+
+  // Otherwise, go to the selected page
+  open(url, '_self');
+
 }
