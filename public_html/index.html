@@ -2,22 +2,434 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <title>Dis Donc! Sample</title>
-    <link rel="stylesheet" href="css/main.css" type="text/css" />
+  <meta charset="utf-8" />
+  <title>Dis Donc! Sample</title>
+  <link rel="stylesheet" href="css/main.css" type="text/css" />
+  <style>
+    #toc {
+      display: none;
+    }
+    main details {
+      padding: 0;
+    }
+    main details > * {
+      margin-left: 1em;
+    }
+  </style>
 </head>
 
-<body style="overflow: hidden; width: auto;" class="no_toc">
-    <div id="content_grid" style="height: 100vh;">
-        <aside id="side-nav">
-            <iframe src="sidenav.html" id="side-nav-iframe" name="sidenav" frameborder="0"></iframe>
-        </aside>
-        <main>
-            <iframe src="main.html" id="main-iframe" name="main" frameborder="0"></iframe>
-            <p>&nbsp;</p>
-        </main>
-    </div>
-    <script src="../js/main.js"></script>
+
+<body>
+  <div id="content_grid" style="height: 100vh">
+    <aside id="side-nav">
+      <iframe src="sidenav.html" id="side-nav-iframe" name="sidenav" frameborder="0"></iframe>
+    </aside>
+
+    <body class="no_toc">
+      <main>
+        <h1 id="main_content">Welcome to Dis Donc!</h1>
+        <p>
+          Dis Donc is an online textbook for introductory French language
+          learning. It includes a not just text, but audio and video to help
+          you learn French more effectively.
+        </p>
+        <p>
+          To get started, go to
+          <a href="prep/prep1.html" target="_parent">Préparation 1</a>.
+        </p>
+        <h2>About the Author</h2>
+        <b>Marlies Mueller</b> received her Ph.D. in Romance Languages and
+        Literatures from Harvard University in 1974. She went on to teach at
+        Harvard University and has prepared graduate students and teaching
+        assistants to teach all courses in the French language program. The
+        author of
+        <i>Les Idées politiques dans le roman heroïques de 1630 a 1670</i> and
+        <i>Militarism and Pacifism in the Ancien Régime</i>, Dr. Mueller has
+        also published numerous articles and chapters in multi-author books,
+        and has been featured in NTC Publishing and Harvard's Derek Bok Center
+        videotapes and interactive videodiscs on teacher training.
+        <h2>About the New Version</h2>
+        <p>
+          DisDonc was originally distributed on three DVDs, using Adobe Flash.
+          It was converted to HTML5 in 2023 by Colin Fredericks, with advice
+          and oversight from Dr. Kimberlee Campbell of Harvard. Every attempt
+          has been made to preserve the original content with a new layout,
+          updated facts and figures, and improved accessibility for screen
+          readers and other assistive technologies.
+        </p>
+
+        <details>
+          <summary>
+            <h2 style="display: inline-block">Original Credits</h2>
+          </summary>
+          <h3>Dis donc! Le français en ligne</h3>
+          <h4>Authors</h4>
+          <ul>
+            <li>Marlies Mueller</li>
+            <li>David M. Stillman, Mediatheque Publisher Services</li>
+          </ul>
+          <h4>Project Staff</h4>
+          <ul>
+            <li>Armando Brito, Project Manager</li>
+          </ul>
+          <h4>Contributing Writers</h4>
+          <ul>
+            <li>Christophe Camard</li>
+            <li>Isabelle Dumont</li>
+            <li>Alexandre Dupeyrix</li>
+            <li>Jérôme Vandenbussche</li>
+          </ul>
+          <h4>Editors</h4>
+          <ul>
+            <li>Katherine Bryant</li>
+            <li>Mary Connell</li>
+            <li>Mark Hänser</li>
+            <li>Michael Lacoy</li>
+            <li>Matthew Maslin</li>
+            <li>Sonja Regelman</li>
+            <li>Patti Marxsen Sides</li>
+            <li>Sam White</li>
+            <li>Natalie Danner, Editorial Director</li>
+          </ul>
+          <h4>Native Proofreaders</h4>
+          <ul>
+            <li>Isabelle Dumont</li>
+            <li>Alexandre Dupeyrix</li>
+            <li>Aude Gabory</li>
+            <li>Frédérique Simon</li>
+          </ul>
+          <h4>Graphic Designers</h4>
+          <ul>
+            <li>Niki Kyounghwa Lee, Audio Engineer</li>
+            <li>Chad Mize, Interactive Designer</li>
+            <li>Jeff Sternchak, Interactive Designer</li>
+            <li>Marlon Violette, Interactive Designer</li>
+            <li>Michael Langone, Manager of Multimedia</li>
+          </ul>
+          <h4>Quality Control</h4>
+          <ul>
+            <li>Justin Behan</li>
+            <li>Lawrence Charap</li>
+            <li>Adam Dressler</li>
+            <li>Shannon Herlihy</li>
+            <li>Jeffrey Patterson</li>
+          </ul>
+          <h4>Technology</h4>
+          <ul>
+            <li>Justin Miranda</li>
+            <li>Jason Stallion</li>
+          </ul>
+          <h4>Permissions</h4>
+          <ul>
+            <li>Diane Bernard, Photo Researcher</li>
+            <li>Katherine Pierce, Permissions Editor</li>
+          </ul>
+          <h4>Voice Actors</h4>
+          <ul>
+            <li>Kader Adjout</li>
+            <li>Lila Azam Zanganeh</li>
+            <li>Carole Bergin</li>
+            <li>Thierry Berthelet</li>
+            <li>Barbara Bouquegneau</li>
+            <li>Christophe Camard</li>
+            <li>Julien Cantegreil</li>
+            <li>Emmanuel Collin</li>
+            <li>Yves Dehnel</li>
+            <li>Alexandre Dupeyrix</li>
+            <li>Selma El Filali</li>
+            <li>Sylvie Fresco-Ostromoukhov</li>
+            <li>Aude Gabory</li>
+            <li>Franck Grall</li>
+            <li>Joseph Hitti</li>
+            <li>Anne Laurent</li>
+            <li>Stéphanie Macaluso</li>
+            <li>David Meulemans</li>
+            <li>Pascale Naudeau</li>
+            <li>Vincent J. Renault</li>
+            <li>Nicolas Rofougaran</li>
+            <li>Jean-Brice Rolland</li>
+            <li>Frédérique Simon</li>
+            <li>Françoise Solly</li>
+            <li>Aurélie Thiria</li>
+            <li>Michel Trèsfort</li>
+            <li>Jérôme Vandenbussche</li>
+            <li>Maïa Werth</li>
+          </ul>
+          <h4>Translators</h4>
+          <ul>
+            <li>Margaret Cullen</li>
+            <li>Marina L. Frederiksen</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>
+            <h2 style="display: inline-block">
+              Copyright and Acknowledgements
+            </h2>
+          </summary>
+          <p>
+            Copyright © 2000 Digital Learning Interactive, LLC. All rights
+            reserved. Published in the United States of America. This
+            publication, and all parts thereof, may not be reproduced in whole
+            or in part, in any form, by photographic, electronic, mechanical,
+            or any other method, for any use, including information storage
+            and retrieval, without prior permission from the publisher.
+          </p>
+          <p>
+            Grateful acknowledgement is made to the following publishers,
+            authors, and agents for their permission to reprint copyrighted
+            material. Every effort has been made to locate all copyright
+            proprietors; any errors in copyright notice are inadvertent and
+            will be corrected as they are discovered.
+          </p>
+
+          <h3>Photo Credits</h3>
+          <p>
+            Adults and Children in Parc Monceau. Photograph © 2001 by Robert
+            Holmes/Corbis Images. www.corbisimages.com. All rights reserved.
+            Used by permission.
+          </p>
+          <p>
+            The Arc de Triomphe at Dusk, Paris, France. Photograph © 1998 from
+            the Flat Earth Collection. www.picture-gallery.com. All rights
+            reserved. Used by permission.
+          </p>
+          <p>
+            An ATM in France. Photograph © 2000 by Ann M. Petrone. Used by
+            permission.
+          </p>
+          <p>
+            Autoroute, entre Orléans et Tours. Photograph © by F. de La
+            Mure/M.A.E. Used courtesy of the Ministère des Affaires
+            Étrangères, République Française.
+          </p>
+          <p>
+            Avenue of Chestnut Trees on the Champs-Élysées, Paris, France.
+            Photograph © 1998 from the Flat Earth Collection.
+            www.picture-gallery.com. All rights reserved. Used by permission.
+          </p>
+          <p>
+            Business Discussion Across Cubicles. Photograph © 2001 by R. W.
+            Jones/Corbis Images. www.corbisimages.com. All rights reserved.
+            Used by permission.
+          </p>
+          <p>
+            Businessmen Walking by La Grande Arche Paris, France. Photograph ©
+            2001 from Corbis Images. www.corbisimages.com. All rights
+            reserved. Used by permission.
+          </p>
+          <p>
+            Collège Diderot, Besançon, France. Photograph © 1989 by Armando
+            Brito. Used by permission.
+          </p>
+          <p>
+            Company Executive Giving Presentation in Business Meeting.
+            Photograph © 2001 by R. W. Jones/Corbis Images.
+            www.corbisimages.com. All rights reserved. Used by permission.
+          </p>
+          <p>
+            Couple at the Left Bank Café. Photograph © 2001 by Fotografia,
+            Inc./Corbis Images. www.corbisimages.com. All rights reserved.
+            Used by permission.
+          </p>
+          <p>
+            France Métro Accident. Photograph © 2001 by AFP/Corbis Images.
+            www.corbisimages.com. All rights reserved. Used by permission.
+          </p>
+          <p>
+            Gendarme Hats. Photograph © 2001 by Owen Franken/Corbis Images.
+            www.corbisimages.com. All rights reserved. Used by permission.
+          </p>
+          <p>
+            Glass Telephone Booth in Paris. Photograph © 2001 by Owen
+            Franken/Corbis Images. www.corbisimages.com. All rights reserved.
+            Used by permission.
+          </p>
+          <p>
+            Hall de la Gare de Lyon (Paris). Photograph © by F. de La
+            Mure/M.A.E. Used courtesy of the Ministère des Affaires
+            Étrangères, République Française.
+          </p>
+          <p>
+            High-Speed Trains at Gare de Lyon. Photograph © 2001 by Carl
+            Purcell/Corbis Images. www.corbisimages.com. All rights reserved.
+            Used by permission.
+          </p>
+          <p>
+            Houdan, France. Photograph © 2001 by Armando Brito. Used by
+            permission.
+          </p>
+          <p>
+            Ingénieur chez Alstom (matériel ferroviaire) à La Rochelle
+            (Poitou-Charentes). Photograph © by F. de La Mure/M.A.E. Used
+            courtesy of the Ministère des Affaires Étrangères, République
+            Française.
+          </p>
+          <p>
+            La cour du Grand Louvre et sa pyramide (Paris). Photograph © by F.
+            de La Mure/M.A.E. Used courtesy of the Ministère des Affaires
+            Étrangères, République Française.
+          </p>
+          <p>
+            La Défense, Paris, France. Photograph © 1998 from the Flat Earth
+            Collection. www.picture-gallery.com. All rights reserved. Used by
+            permission.
+          </p>
+          <p>
+            La Géode at the Cité des Sciences et de l'Industrie, Parc de la
+            Villette. Photograph © 1991 by Armando Brito. Used by permission.
+          </p>
+          <p>
+            Le Centre Georges Pompidou, Paris, France. Photograph © 1998 from
+            the Flat Earth Collection. www.picture-gallery.com. All rights
+            reserved. Used by permission.
+          </p>
+          <p>
+            Le Châble Street Scene, Le Châble, Switzerland. Photograph © 2000
+            by Ronni L. Gordon Stillman. Used by permission.
+          </p>
+          <p>
+            L'église de Verbier. Photograph © 2001 by Ronni L. Gordon
+            Stillman. Used by permission.
+          </p>
+          <p>
+            Le festival de Verbier. Photograph © 2001 by Ronni L. Gordon
+            Stillman. Used by permission.
+          </p>
+          <p>
+            Le Hameau, Verbier, Switzerland. Photographs © 2001 by Michel
+            Darbellay, Martigny. Used by permission.
+          </p>
+          <p>
+            Le paysage de la haute montagne près de Verbier. Photograph © 2001
+            by Ronni L. Gordon Stillman. Used by permission.
+          </p>
+          <p>
+            Le Penseur, Musée Rodin (Paris). Photograph © by F. de La
+            Mure/M.A.E. Used courtesy of the Ministère des Affaires
+            Étrangères, République Française.
+          </p>
+          <p>
+            Lobby at the Avenue Plaza Suite Hotel. Photograph © 2001 by Robert
+            Holmes/Corbis Images. www.corbisimages.com. All rights reserved.
+            Used by permission.
+          </p>
+          <p>
+            Métro automatique, ligne Météor (Paris). Photograph © by F. de La
+            Mure/M.A.E. Used courtesy of the Ministère des Affaires
+            Étrangères, République Française.
+          </p>
+          <p>
+            Métro Marcel Sembat, Boulogne-Billancourt, France. Photograph ©
+            2001 by Armando Brito. Used by permission.
+          </p>
+          <p>
+            Montmartre, France (24 views). Frontispiece Photos © 1999 Gary
+            Zabel. Photo Collage © 2000 Digital Learning Interactive, LLC.
+            Used by permission.
+          </p>
+          <p>
+            Mont Blanc, France. Photograph © 2001 by Michael Busselle/Corbis
+            Images. www.corbisimages.com. All rights reserved. Used by
+            permission.
+          </p>
+          <p>
+            Musée du Louvre (Paris). Photograph © by F. de La Mure/M.A.E. Used
+            courtesy of the Ministère des Affaires Étrangères, République
+            Française.
+          </p>
+          <p>
+            A Newsstand in Paris. Photograph © 2000 by Ann M. Petrone. Used by
+            permission.
+          </p>
+          <p>
+            Opéra-Bastille (Paris). Photograph © by F. de La Mure/M.A.E. Used
+            courtesy of the Ministère des Affaires Étrangères, République
+            Française.
+          </p>
+          <p>
+            Parapente dans le Parc régional des volcans d'Auvergne. Photograph
+            © by F. de La Mure/M.A.E. Used courtesy of the Ministère des
+            Affaires Étrangères, République Française.
+          </p>
+          <p>
+            People Dining at Sidewalk Café. Photograph © 2001 by Robert
+            Holmes/Corbis Images. www.corbisimages.com. All rights reserved.
+            Used by permission.
+          </p>
+          <p>
+            Poteau indicateur au Hameau. Photograph © 2001 by Ronni L. Gordon
+            Stillman. Used by permission.
+          </p>
+          <p>
+            Rue Royale, Paris, France, from the Church of la Madeleine,
+            looking towards the Place de la Concorde. Photograph © 1989 by
+            Armando Brito. Used by permission.
+          </p>
+          <p>
+            Saint Bernard Express, Switzerland. Photograph © 2000 by Ronni L.
+            Gordon Stillman. Used by permission.
+          </p>
+          <p>
+            Succès grandissant des pistes cyclables (Paris). Photograph © by
+            F. de La Mure/M.A.E. Used courtesy of the Ministère des Affaires
+            Étrangères, République Française.
+          </p>
+          <p>
+            TGV Trains at a Station. Photograph © 2001 by Ecoscene/Corbis
+            Images. www.corbisimages.com. All rights reserved. Used by
+            permission.
+          </p>
+          <p>
+            Vallée alpine au-dessus de Bourg-Saint-Maurice. Photograph © by F.
+            de La Mure/M.A.E. Used courtesy of the Ministère des Affaires
+            Étrangères, République Française.
+          </p>
+          <p>
+            Verbier, Switzerland. Photograph © 2001 by Paul Almasy/Corbis
+            Images. www.corbisimages.com. All rights reserved. Used by
+            permission.
+          </p>
+          <p>
+            View of L’Ile de la Cité from Notre Dame, Paris, France.
+            Photograph © 1998 from the Flat Earth Collection.
+            www.picture-gallery.com. All rights reserved. Used by permission.
+          </p>
+          <p>
+            View Over City from Eiffel Tower, Paris, France. Photograph © 1998
+            from the Flat Earth Collection. www.picture-gallery.com. All
+            rights reserved. Used by permission.
+          </p>
+          <p>
+            Villagers Talking. Photograph © 2001 by Stephanie Maze/Corbis
+            Images. www.corbisimages.com. All rights reserved. Used by
+            permission.
+          </p>
+          <p>
+            Visitors Behind the Venus de Milo. Photograph © 2001 by
+            HorreeZirkzee Produk/Corbis Images. www.corbisimages.com. All
+            rights reserved. Used by permission.
+          </p>
+          <p>
+            The West End of Sacré-Coeur, Paris, France. Photograph © 1998 from
+            the Flat Earth Collection. www.picture-gallery.com. All rights
+            reserved. Used by permission.
+          </p>
+          <p>
+            Young Parisian Woman. Photograph © 2001 by Catherine Karnow/Corbis
+            Images. www.corbisimages.com. All rights reserved. Used by
+            permission.
+          </p>
+        </details>
+
+        <p style="height:10em;">&nbsp;</p>
+
+      </main>
+      <script src="../js/main.js"></script>
+    </body>
+  </div>
+  <script src="../js/main.js"></script>
 </body>
 
 </html>
