@@ -151,15 +151,21 @@ function makeTopNav() {
   select.setAttribute("onchange", "topNav()");
   nav.appendChild(select);
 
+  let prefix = "prep/";
+  if(document.URL.includes("prep")) {
+    prefix = "";
+  }
+
   // Add the options
   // There are 36 preparations and the index.html page
   let index = document.createElement("option");
   index.value = "../index.html";
   index.textContent = "Homepage";
   select.appendChild(index);
+
   for (let i = 1; i <= 36; i++) {
     let option = document.createElement("option");
-    option.value = "prep" + i + ".html";
+    option.value = prefix + "prep" + i + ".html";
     option.textContent = "Préparation " + i;
     select.appendChild(option);
   }
