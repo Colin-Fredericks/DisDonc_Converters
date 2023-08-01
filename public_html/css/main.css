@@ -545,7 +545,7 @@ select {
   }
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 800px) {
   #side-nav {
     display: none;
   }
@@ -554,6 +554,7 @@ select {
     display: block;
     background-color: var(--thin-border);
     padding: 0.25em;
+    margin-right: -4%;
   }
 
   #content_grid {
@@ -568,6 +569,7 @@ select {
   #toc {
     border: none;
     padding: 0.25em;
+    margin-right: -4%;
   }
 
 }
