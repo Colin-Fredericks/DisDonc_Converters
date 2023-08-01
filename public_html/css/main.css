@@ -433,7 +433,8 @@ details .widebar {
   display: none;
   margin-right: -8%;
   text-align: right;
-  border-bottom: 2px solid saddlebrown;
+  border-bottom: 2px solid var(--background-color);
+  border-radius: 4px;
   float: right;
   width: 100%;
 }
@@ -456,8 +457,6 @@ select {
   appearance: none !important;
   padding-right: 2rem !important;
 }
-
-
 
 .sr-only {
   position: absolute;
@@ -524,6 +523,7 @@ select {
     width: 100%;
     /* padding: 10px; */
     text-align: right;
+    border-radius: 4px;
   }
 
   #toc_menu {
