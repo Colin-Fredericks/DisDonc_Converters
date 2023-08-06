@@ -7,6 +7,30 @@
   src: url("../fonts/PTSerif-Regular.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "PT Serif Italic";
+  font-style: normal;
+  font-weight: 400;
+  font-variation-settings: "wght" 400;
+  src: url("../fonts/PTSerif-Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "PT Serif Bold";
+  font-style: normal;
+  font-weight: 700;
+  font-variation-settings: "wght" 700;
+  src: url("../fonts/PTSerif-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "PT Bold Italic";
+  font-style: normal;
+  font-weight: 700;
+  font-variation-settings: "wght" 700;
+  src: url("../fonts/PTSerif-BoldItalic.ttf") format("truetype");
+}
+
 /* Import local copy of Raleway variable-width font */
 @font-face {
   font-family: "Raleway";
@@ -44,6 +68,8 @@ h1:first-of-type {
 body {
   font-family: "PT Serif", Georgia, "Times New Roman", Times, serif;
   font-size: large;
+  font-weight: 400;
+  font-variation-settings: "wght" 400;
   background-color: var(--background-color);
   color: var(--text-color);
   width: 90%;
@@ -60,6 +86,12 @@ a:visited {
   color: darkred;
   font-weight: 400;
   font-variation-settings: "wght" 300;
+}
+
+b {
+  font-family: "PT Serif Bold", Georgia, "Times New Roman", Times, serif;
+  font-weight: 700;
+  font-variation-settings: "wght" 700;
 }
 
 main {
