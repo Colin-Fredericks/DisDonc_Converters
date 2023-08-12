@@ -202,6 +202,7 @@ details.show-answer {
   padding: 0px;
   width: auto;
   border: none;
+  font-family: "PT Serif Bold", Georgia, "Times New Roman", Times, serif;
   font-weight: bold;
   font-variation-settings: "wght" 700;
   background-color: transparent;
