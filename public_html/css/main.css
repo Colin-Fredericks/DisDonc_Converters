@@ -257,6 +257,10 @@ table.striped tr:nth-of-type(2n + 1) {
   background-color: wheat;
 }
 
+table.striped-headers th {
+  background-color: wheat;
+}
+
 .one-grid {
   display: grid;
   grid-template-columns: auto;
