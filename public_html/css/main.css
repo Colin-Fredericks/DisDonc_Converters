@@ -94,6 +94,12 @@ b {
   font-variation-settings: "wght" 700;
 }
 
+strong {
+  font-family: "PT Serif Bold", Georgia, "Times New Roman", Times, serif;
+  font-weight: 700;
+  font-variation-settings: "wght" 700;
+}
+
 main {
   padding: 1em 0 1em 1.5em;
   border-left: 20px solid rgb(220, 214, 200);
