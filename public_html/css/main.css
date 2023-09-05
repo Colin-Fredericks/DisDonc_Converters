@@ -147,6 +147,12 @@ table {
   margin: 0.5em;
 }
 
+table th {
+  font-family: "PT Serif Bold", Georgia, "Times New Roman", Times, serif;
+  font-weight: 700;
+  font-variation-settings: "wght" 700;
+}
+
 table th,
 table td {
   padding: 1px 0.5em 1px 0.5em;
@@ -624,6 +630,7 @@ select {
   #toc h1 {
     font-size: initial;
   }
+
 }
 
 @media screen and (max-width: 900px) {
@@ -631,6 +638,20 @@ select {
     float: none;
     width: 100%;
     margin: 1em auto 1em auto;
+  }
+
+  .modele {
+    display:flex;
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .modele audio {
+    width: 100%;
+  }
+
+  .modele p {
+    margin: 4px 0 0 0;
   }
 }
 
