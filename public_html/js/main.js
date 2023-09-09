@@ -17,19 +17,19 @@ window.onload = function () {
   // Make the table of contents.
   // Don't add it to any page with the class "no_toc"
   // if (!document.querySelector("body").classList.contains("no_toc")) {
-    makeTOC();
-    makeTopNav();
+  makeTOC();
+  makeTopNav();
 
-    // Set the top nav's select element to the current page
-    let select = document.querySelector("#top_nav select");
-    let url = window.location.href;
-    // Just get the part after the last slash.
-    url = url.substring(url.lastIndexOf("/") + 1);
-    console.log(url);
-    let option = select.querySelector('option[value="' + url + '"]');
-    if (option != null) {
-      option.selected = true;
-    }
+  // Set the top nav's select element to the current page
+  let select = document.querySelector("#top_nav select");
+  let url = window.location.href;
+  // Just get the part after the last slash.
+  url = url.substring(url.lastIndexOf("/") + 1);
+  console.log(url);
+  let option = select.querySelector('option[value="' + url + '"]');
+  if (option != null) {
+    option.selected = true;
+  }
   // }
 };
 
@@ -152,7 +152,7 @@ function makeTopNav() {
   nav.appendChild(select);
 
   let prefix = "prep/";
-  if(document.URL.includes("prep")) {
+  if (document.URL.includes("prep")) {
     prefix = "";
   }
 
