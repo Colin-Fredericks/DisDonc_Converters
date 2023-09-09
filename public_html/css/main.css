@@ -139,6 +139,13 @@ details.simple > summary {
   font-family: "PT Serif", Georgia, "Times New Roman", Times, serif;
 }
 
+dl.definitions dt {
+  margin-top: 0.5em;
+  font-family: "PT Serif Bold", Georgia, "Times New Roman", Times, serif;
+  font-weight: 700;
+  font-variation-settings: "wght" 700;
+}
+
 /*****************
 * Tables and grids
 ******************/
@@ -187,6 +194,10 @@ table.striped-headers th {
 .conversation dt {
   font-style: italic;
   margin-top: 0.5em;
+}
+
+.conversation .audio-player {
+  width: 120%;
 }
 
 .one-grid {
@@ -630,6 +641,10 @@ select {
   #toc h1 {
     font-size: initial;
   }
+
+  .conversation {
+    display: initial;
+  }  
 
 }
 
