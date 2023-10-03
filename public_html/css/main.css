@@ -381,6 +381,29 @@ details.answer-bar summary {
   background-color: peru;
 }
 
+details.vocabulaire dl {
+  display: grid;
+  grid: auto / auto auto;
+}
+
+details.vocabulaire > dl > dd {
+  margin: 0;
+}
+
+details.vocabulaire > dl > dt {
+  margin: 0;
+}
+
+details.vocabulaire dt {
+  font-family: "PT Serif Bold", Georgia, "Times New Roman", Times, serif;
+  font-weight: 700;
+  font-variation-settings: "wght" 700;
+}
+
+dl.two-grid > *:nth-of-type(2n + 1) {
+  background-color: wheat;
+}
+
 .details-wrapper {
   display: flex;
   margin: 1em 0em 1em 0em;
