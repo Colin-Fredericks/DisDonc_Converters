@@ -1,4 +1,5 @@
 .DS_Store
 ddc/
+temp/
 __pycache__/*
 public_html/video_large/*
