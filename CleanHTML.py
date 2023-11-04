@@ -11,6 +11,7 @@ import bs4
 # TODO: Better filepath handling so it doesn't matter where
 # the script is run from.
 
+
 # Try to open the file.
 # If it doesn't exist, change the path to readings/ and try that.
 def openAndGuessEncoding(filename):
@@ -85,7 +86,7 @@ def fixAudioLinks(soup, outer_soup):
         for tag in table.find_all("p", class_="audio-player"):
             table.insert_before(tag)
             tag.decompose()
-    
+
     return soup
 
 
@@ -172,29 +173,39 @@ def main():
     # Remove the outer <html>, <head>, and <body> tags.
     # Just get the outer <div> tag for the <body>.
     soup = outer_soup.body.div
+    if not soup:
+        soup = outer_soup.body
 
     # If there's a table with only one row,
     # get the link from the second <td> and the the text from both <td>s
     # Turn the table into a <summary> tag, with the second <td> first.
     # Pull in the file from the link and put it in the <details> tag.
-    for table in soup.find_all("table"):
-        if len(table.find_all("tr")) == 1:
-            details_wrapper = outer_soup.new_tag("div")
-            details_tag = outer_soup.new_tag("details")
-            summary_tag = outer_soup.new_tag("summary")
-            details_wrapper["class"] = ["details-wrapper"]
-            details_tag.append(summary_tag)
-            details_wrapper.append(details_tag)
+    tables = True
+    try:
+        soup.find_all("table")
+    except AttributeError:
+        tables = False
+        print("No tables found.")
 
-            row = table.find("tr")
-            cells = row.find_all("td")
-            if len(cells) > 1:
-                link = cells[1].find("a")
-                if link:
-                    pullFromLink(summary_tag, details_wrapper, table, link, cells)
+    if tables:
+        for table in soup.find_all("table"):
+            if len(table.find_all("tr")) == 1:
+                details_wrapper = outer_soup.new_tag("div")
+                details_tag = outer_soup.new_tag("details")
+                summary_tag = outer_soup.new_tag("summary")
+                details_wrapper["class"] = ["details-wrapper"]
+                details_tag.append(summary_tag)
+                details_wrapper.append(details_tag)
 
-    # Remove all ID attributes
-    for tag in soup.find_all(True):
+                row = table.find("tr")
+                cells = row.find_all("td")
+                if len(cells) > 1:
+                    link = cells[1].find("a")
+                    if link:
+                        pullFromLink(summary_tag, details_wrapper, table, link, cells)
+
+    # Remove all ID attributes from all tags
+    for tag in soup.find_all(id=True):
         del tag["id"]
 
     # Remove the following attributes:
@@ -233,7 +244,6 @@ def main():
         # Clean out any empty style attributes
         if tag["style"].strip() in [";", ""]:
             del tag["style"]
-
 
     # Remove the following classes:
     # rea, au
