@@ -381,20 +381,20 @@ details.answer-bar summary {
   background-color: peru;
 }
 
-details.vocabulaire dl {
+.vocabulaire dl {
   display: grid;
   grid: auto / auto auto;
 }
 
-details.vocabulaire > dl > dd {
+.vocabulaire > dl > dd {
   margin: 0;
 }
 
-details.vocabulaire > dl > dt {
+.vocabulaire > dl > dt {
   margin: 0;
 }
 
-details.vocabulaire dt {
+.vocabulaire dt {
   font-family: "PT Serif Bold", Georgia, "Times New Roman", Times, serif;
   font-weight: 700;
   font-variation-settings: "wght" 700;
