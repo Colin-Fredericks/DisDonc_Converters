@@ -235,7 +235,7 @@ table.striped-headers th {
 }
 
 .three-grid > div {
-  padding: 2px;
+  padding: 2px 6px 2px 2px;
 }
 
 .three-grid div:nth-of-type(6n + 1),
@@ -252,7 +252,7 @@ table.striped-headers th {
 }
 
 .four-grid > div {
-  padding: 2px;
+  padding: 2px 6px 2px 2px;
 }
 
 .four-grid div:nth-of-type(8n + 1),
@@ -388,10 +388,12 @@ details.answer-bar summary {
 
 .vocabulaire > dl > dd {
   margin: 0;
+  padding: 2px;
 }
 
 .vocabulaire > dl > dt {
   margin: 0;
+  padding: 2px;
 }
 
 .vocabulaire dt {
